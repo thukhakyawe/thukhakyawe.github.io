@@ -149,16 +149,35 @@
   </div>
 </section>
 
+
 <section id="github" class="section github-section">
   <div class="shell">
     <div class="section-label">05 / GITHUB</div>
-    <div class="section-head"><h2>Building in <em>public.</em></h2><a class="text-link" href="https://github.com/thukhakyawe" target="_blank" rel="noopener">@thukhakyawe ↗</a></div>
-    <div class="github-cards">
-      <div><img src="https://github-readme-stats.vercel.app/api?username=thukhakyawe&theme=chartreuse-dark&hide_border=true&include_all_commits=true&count_private=true" alt="GitHub statistics"></div>
-      <div><img src="https://github-readme-streak-stats.herokuapp.com/?user=thukhakyawe&theme=chartreuse-dark&hide_border=true" alt="GitHub contribution streak"></div>
-      <div><img src="https://github-readme-stats.vercel.app/api/top-langs/?username=thukhakyawe&theme=chartreuse-dark&hide_border=true&include_all_commits=true&count_private=true&layout=compact" alt="Top GitHub languages"></div>
+    <div class="section-head">
+      <div><h2>Building in <em>public.</em></h2><p id="github-status">Live data from GitHub</p></div>
+      <a class="text-link" href="https://github.com/thukhakyawe" target="_blank" rel="noopener">@thukhakyawe ↗</a>
     </div>
-    <div class="trophy"><img src="https://github-profile-trophy.vercel.app/?username=thukhakyawe&theme=discord&no-frame=true&no-bg=true&margin-w=4" alt="GitHub trophies"></div>
+    <div class="gh-overview">
+      <div class="gh-stat"><span>Public repositories</span><strong id="gh-repos">—</strong></div>
+      <div class="gh-stat"><span>Followers</span><strong id="gh-followers">—</strong></div>
+      <div class="gh-stat"><span>Total stars</span><strong id="gh-stars">—</strong></div>
+      <div class="gh-stat"><span>Forks</span><strong id="gh-forks">—</strong></div>
+    </div>
+    <div class="gh-main">
+      <div class="gh-panel">
+        <div class="gh-panel-head"><span>Featured repositories</span><a href="https://github.com/thukhakyawe?tab=repositories" target="_blank" rel="noopener">View all ↗</a></div>
+        <div id="github-repos" class="repo-list"><div class="repo-skeleton"></div><div class="repo-skeleton"></div><div class="repo-skeleton"></div></div>
+      </div>
+      <div class="gh-panel">
+        <div class="gh-panel-head"><span>Languages</span><span class="muted">from public repositories</span></div>
+        <div id="github-languages" class="language-list"><div class="repo-skeleton"></div><div class="repo-skeleton"></div><div class="repo-skeleton"></div></div>
+        <div class="gh-note">Language breakdown is calculated from public repository metadata returned by GitHub.</div>
+      </div>
+    </div>
+    <div class="gh-footer">
+      <div><span class="gh-live-dot"></span><strong id="github-updated">GitHub API</strong><small>Public repository data · no embedded README cards</small></div>
+      <a class="button ghost small-button" href="https://github.com/thukhakyawe" target="_blank" rel="noopener">Open GitHub profile <b>↗</b></a>
+    </div>
   </div>
 </section>
 
