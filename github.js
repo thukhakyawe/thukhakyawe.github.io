@@ -17,7 +17,8 @@ async function getJSON(url) {
     const response = await fetch(url, {
         headers: {
             Accept: "application/vnd.github+json"
-        }
+        },
+        cache: "no-store"
     });
 
     if (!response.ok) {
@@ -33,27 +34,28 @@ async function loadGitHub() {
     const langsEl = document.getElementById("github-languages");
 
     try {
-        // Get profile + repositories
         const [profile, repos] = await Promise.all([
-            getJSON(`${API}/users/${USER}`),
             getJSON(
-                `${API}/users/${USER}/repos?per_page=100&sort=pushed&direction=desc`
+                `${API}/users/${USER}?_=${Date.now()}`
+            ),
+
+            getJSON(
+                `${API}/users/${USER}/repos?per_page=100&sort=pushed&direction=desc&_=${Date.now()}`
             )
         ]);
 
-        // Only show your own active repositories
-        // Excludes forks and archived repositories
+        // Only your own active repositories.
+        // Forks and archived repositories are excluded.
         const owned = repos.filter(
             (repo) => !repo.fork && !repo.archived
         );
 
-        // GitHub already returns repositories by latest push.
-        // Take the newest 5.
+        // GitHub API returns these in latest-pushed order.
         const latest = owned.slice(0, 5);
 
-        // --------------------------------
-        // GitHub statistics
-        // --------------------------------
+        // -----------------------------
+        // Statistics
+        // -----------------------------
 
         document.getElementById("gh-repos").textContent =
             fmt(profile.public_repos);
@@ -79,84 +81,86 @@ async function loadGitHub() {
                 )
             );
 
-        status.textContent = "Live public repository data";
+        status.textContent =
+            "Live public repository data";
 
-        document.getElementById("github-updated").textContent =
-            "Live from GitHub";
+        document.getElementById(
+            "github-updated"
+        ).textContent = "Live from GitHub";
 
-        // --------------------------------
+        // -----------------------------
         // Latest repositories
-        // --------------------------------
+        // -----------------------------
 
         reposEl.innerHTML = latest.length
-            ? latest
-                  .map(
-                      (repo) => `
-                        <a
-                            class="repo"
-                            href="${repo.html_url}"
-                            target="_blank"
-                            rel="noopener"
-                        >
-                            <div>
-                                <div class="repo-name">
-                                    ${esc(repo.name)}
-                                </div>
+            ? latest.map((repo) => `
+                <a
+                    class="repo"
+                    href="${repo.html_url}"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    <div>
 
-                                <div class="repo-desc">
-                                    ${esc(
-                                        repo.description ||
-                                            "No repository description yet."
-                                    )}
-                                </div>
+                        <div class="repo-name">
+                            ${esc(repo.name)}
+                        </div>
 
-                                <div class="repo-meta">
+                        <div class="repo-desc">
+                            ${esc(
+                                repo.description ||
+                                "No repository description yet."
+                            )}
+                        </div>
 
-                                    ${
-                                        repo.language
-                                            ? `
-                                                <span>
-                                                    ● ${esc(repo.language)}
-                                                </span>
-                                            `
-                                            : ""
-                                    }
+                        <div class="repo-meta">
 
-                                    <span>
-                                        ★ ${fmt(repo.stargazers_count)}
-                                    </span>
+                            ${
+                                repo.language
+                                    ? `
+                                        <span>
+                                            ● ${esc(repo.language)}
+                                        </span>
+                                    `
+                                    : ""
+                            }
 
-                                    <span>
-                                        ⑂ ${fmt(repo.forks_count)}
-                                    </span>
+                            <span>
+                                ★ ${fmt(repo.stargazers_count)}
+                            </span>
 
-                                    <span>
-                                        ${repo.visibility}
-                                    </span>
+                            <span>
+                                ⑂ ${fmt(repo.forks_count)}
+                            </span>
 
-                                </div>
-                            </div>
+                            <span>
+                                ${esc(repo.visibility)}
+                            </span>
 
-                            <div class="repo-arrow">
-                                ↗
-                            </div>
-                        </a>
-                    `
-                  )
-                  .join("")
+                        </div>
+
+                    </div>
+
+                    <div class="repo-arrow">
+                        ↗
+                    </div>
+
+                </a>
+            `).join("")
             : `
                 <div class="github-error">
                     <strong>
                         No public repositories found.
                     </strong>
 
-                    Publish projects and they will appear here automatically.
+                    Publish projects and they will appear
+                    here automatically.
                 </div>
             `;
 
-        // --------------------------------
+        // -----------------------------
         // Languages
-        // --------------------------------
+        // -----------------------------
 
         const languageCounts = {};
 
@@ -178,38 +182,38 @@ async function loadGitHub() {
             ) || 1;
 
         langsEl.innerHTML = languageRows.length
-            ? languageRows
-                  .map(([name, count]) => {
-                      const percentage = Math.max(
-                          5,
-                          Math.round(
-                              (count / languageTotal) * 100
-                          )
-                      );
+            ? languageRows.map(([name, count]) => {
 
-                      return `
-                        <div class="lang">
+                const percentage = Math.max(
+                    5,
+                    Math.round(
+                        (count / languageTotal) * 100
+                    )
+                );
 
-                            <div class="lang-line">
-                                <span>
-                                    ${esc(name)}
-                                </span>
+                return `
+                    <div class="lang">
 
-                                <span>
-                                    ${percentage}%
-                                </span>
-                            </div>
+                        <div class="lang-line">
+                            <span>
+                                ${esc(name)}
+                            </span>
 
-                            <div class="lang-bar">
-                                <i
-                                    style="width:${percentage}%"
-                                ></i>
-                            </div>
-
+                            <span>
+                                ${percentage}%
+                            </span>
                         </div>
-                      `;
-                  })
-                  .join("")
+
+                        <div class="lang-bar">
+                            <i
+                                style="width:${percentage}%"
+                            ></i>
+                        </div>
+
+                    </div>
+                `;
+
+            }).join("")
             : `
                 <div class="github-error">
                     Language metadata will appear once
