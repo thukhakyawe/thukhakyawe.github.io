@@ -1,63 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Thu Kha Kyawe – DevOps & Cloud Engineer Portfolio" />
-  <title>Thu Kha Kyawe – DevOps & Cloud Engineer</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Thu Kha Kyawe — SRE & Cloud Engineer, AWS Certified Professional">
+  <title>Thu Kha Kyawe | SRE & Cloud Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>Thu Kha Kyawe</h1>
-    <p>DevOps & Cloud Engineer | AWS Certified | Terraform | Kubernetes</p>
+  <div class="bg-grid"></div>
+
+  <header class="hero">
+    <nav class="nav container">
+      <a class="logo" href="#">TKK<span>.</span></a>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#stack">Stack</a>
+        <a href="#certifications">Certifications</a>
+        <a href="#stats">GitHub</a>
+      </div>
+    </nav>
+
+    <div class="hero-content container">
+      <div class="terminal-label"><span class="dot"></span> available for cloud & DevOps projects</div>
+      <p class="eyebrow">SRE / CLOUD ENGINEER</p>
+      <h1>Building reliable<br><span>cloud infrastructure.</span></h1>
+      <p class="hero-copy">
+        Cloud enthusiast focused on AWS, DevOps, infrastructure as code,
+        automation, and practical hands-on engineering.
+      </p>
+      <div class="hero-actions">
+        <a class="btn primary" href="https://www.linkedin.com/in/thukhakyawe/" target="_blank" rel="noopener">Connect on LinkedIn</a>
+        <a class="btn secondary" href="https://github.com/thukhakyawe" target="_blank" rel="noopener">View GitHub</a>
+      </div>
+    </div>
   </header>
 
   <main>
-    <section>
-      <h2>About Me</h2>
-      <p>I’m a Site Reliability Engineer at Onenex with deep hands-on experience in AWS infrastructure, automation, Infrastructure as Code (IaC), and DevOps pipelines. I focus on building reliable, scalable, and cost-optimized cloud environments using tools like Terraform, Kubernetes, and GitLab CI/CD.</p>
+    <section id="about" class="section container">
+      <div class="section-heading">
+        <span>01</span>
+        <h2>About me</h2>
+      </div>
+      <div class="about-grid">
+        <div>
+          <p class="lead">
+            I'm a cloud enthusiast passionately navigating my DevOps journey.
+            My focus is on building, automating, and optimizing infrastructure
+            in the cloud, primarily using <strong>AWS</strong>.
+          </p>
+          <p>
+            I believe in learning by doing, which is why I'm constantly getting
+            my hands dirty with practical projects and hands-on labs.
+          </p>
+        </div>
+        <div class="info-card">
+          <div><span>Currently working on</span><strong>AWS projects & hands-on labs</strong></div>
+          <div><span>Currently learning</span><strong>Terraform · Docker · Kubernetes · CI/CD</strong></div>
+          <div><span>Looking to collaborate</span><strong>Open-source AWS & DevOps projects</strong></div>
+          <div><span>Ask me about</span><strong>EC2 · S3 · IAM · VPC · Cloud fundamentals</strong></div>
+        </div>
+      </div>
     </section>
 
-    <section>
-      <h2>Skills</h2>
-      <ul>
-        <li>AWS (EC2, RDS, S3, CloudFront, ALB, WAF, Lambda)</li>
-        <li>Infrastructure as Code: Terraform, CloudFormation, Ansible</li>
-        <li>Containers & Orchestration: Docker, Kubernetes (CKA in progress)</li>
-        <li>CI/CD: GitLab CI, GitHub Actions</li>
-        <li>Monitoring & Observability: CloudWatch, Prometheus, Grafana</li>
-        <li>Security, High Availability, Cost Optimization</li>
-      </ul>
+    <section id="stack" class="section section-alt">
+      <div class="container">
+        <div class="section-heading">
+          <span>02</span>
+          <h2>Technology stack</h2>
+        </div>
+        <div class="tag-grid">
+          <span>Python</span><span>Shell Script</span><span>YAML</span><span>PowerShell</span>
+          <span>AWS</span><span>Cloudflare</span><span>DigitalOcean</span><span>GitHub Pages</span>
+          <span>Nginx</span><span>Apache</span><span>DynamoDB</span><span>MariaDB</span>
+          <span>SQL Server</span><span>MySQL</span><span>PostgreSQL</span><span>Redis</span>
+          <span>GitHub Actions</span><span>Git</span><span>GitHub</span><span>GitLab</span>
+          <span>Ansible</span><span>Cisco</span><span>Docker</span><span>Notion</span>
+          <span>Terraform</span><span>GitLab CI</span><span>Kubernetes</span>
+        </div>
+      </div>
     </section>
 
-    <section>
-      <h2>Certifications</h2>
-      <ul>
-        <li>AWS Certified Solutions Architect – Associate</li>
-        <li>AWS Certified Developer – Associate</li>
-        <li>AWS Certified SysOps Administrator – Associate</li>
-        <li>AWS Certified AI Practitioner</li>
-        <li>Microsoft Certified: Azure AI Engineer Associate (in progress)</li>
-      </ul>
+    <section id="certifications" class="section container">
+      <div class="section-heading">
+        <span>03</span>
+        <h2>Certifications</h2>
+      </div>
+      <div class="cert-grid">
+        <a href="https://www.credly.com/badges/d75ca502-e8ea-491f-9679-f8934eaaefb8" target="_blank" rel="noopener">Cisco CCNA Routing and Switching</a>
+        <a href="https://www.credly.com/badges/f5b287f8-bb16-411d-af4d-cf5caa845c70/public_url" target="_blank" rel="noopener">AWS Solutions Architect – Associate</a>
+        <a href="https://www.credly.com/badges/1d3c90c5-2fb5-429c-bc43-2404ff956380/public_url" target="_blank" rel="noopener">AWS Developer – Associate</a>
+        <a href="https://www.credly.com/badges/f13cd1de-e7b8-43c3-8b3a-8b69e9c68e0e/public_url" target="_blank" rel="noopener">AWS SysOps Administrator – Associate</a>
+        <a href="https://www.credly.com/badges/8f70795b-2f90-4de7-b72a-f28ddaf5fb77/public_url" target="_blank" rel="noopener">Aviatrix Multicloud Network Associate</a>
+        <a href="https://www.credly.com/badges/d3e504d0-af88-4540-bc0c-859f929265d6/public_url" target="_blank" rel="noopener">HashiCorp Terraform Associate (003)</a>
+        <a href="https://www.credly.com/badges/4c14956c-f6a2-46f6-9227-5950b4a921cd/public_url" target="_blank" rel="noopener">GitHub Foundations</a>
+        <a href="https://www.credly.com/badges/06537b05-8c32-4cf6-abce-84596456cea9/public_url" target="_blank" rel="noopener">AWS Certified AI Practitioner</a>
+        <a href="https://learn.microsoft.com/api/credentials/share/en-us/ThuKhaKyawe/80E8CADD297C4D07?sharingId=C7D6B0C59EEF881" target="_blank" rel="noopener">Microsoft Azure AI Engineer Associate</a>
+        <a href="https://www.credly.com/badges/3a00ef1c-dcc4-4b0c-b1fc-d72abc1ffd55/public_url" target="_blank" rel="noopener">GitHub Actions</a>
+        <a href="https://www.credly.com/badges/31ab1481-b688-49cb-9b01-a4bc0ea05e36/public_url" target="_blank" rel="noopener">GitHub Advanced Security</a>
+        <a href="https://learn.microsoft.com/api/credentials/share/en-us/ThuKhaKyawe/178817865ED96CDC?sharingId=C7D6B0C59EEF881" target="_blank" rel="noopener">GitHub Copilot</a>
+        <a href="https://www.credly.com/badges/19a4bf86-6d10-4f13-b94c-85ebb65044a9/public_url" target="_blank" rel="noopener">AWS Solutions Architect – Professional</a>
+        <a href="https://www.credly.com/badges/5e3bf959-2bdc-43aa-8c8e-647e116eb0a0/public_url" target="_blank" rel="noopener">AWS Machine Learning Engineer – Associate</a>
+        <a href="https://www.credly.com/badges/bb3e02c2-a724-475b-a08d-6ee1381a6165/public_url" target="_blank" rel="noopener">AWS Security – Specialty</a>
+        <a href="https://www.credly.com/badges/acecc7e6-3156-4009-a05b-4fcb23629088/public_url" target="_blank" rel="noopener">AWS Cloud Practitioner</a>
+      </div>
+      <p class="center-link"><a href="https://www.credly.com/users/thukhakyawe" target="_blank" rel="noopener">View all certifications on Credly →</a></p>
     </section>
 
-    <section>
-      <h2>Blog</h2>
-      <p>Coming soon: Articles on real-world DevOps practices, Terraform tutorials, and hands-on AWS automation strategies.</p>
+    <section id="stats" class="section section-alt">
+      <div class="container">
+        <div class="section-heading">
+          <span>04</span>
+          <h2>GitHub activity</h2>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><img src="https://github-readme-stats.vercel.app/api?username=thukhakyawe&theme=chartreuse-dark&hide_border=true&include_all_commits=true&count_private=true" alt="GitHub statistics"></div>
+          <div class="stat-card"><img src="https://github-readme-streak-stats.herokuapp.com/?user=thukhakyawe&theme=chartreuse-dark&hide_border=true" alt="GitHub contribution streak"></div>
+          <div class="stat-card"><img src="https://github-readme-stats.vercel.app/api/top-langs/?username=thukhakyawe&theme=chartreuse-dark&hide_border=true&include_all_commits=true&count_private=true&layout=compact" alt="Top GitHub languages"></div>
+        </div>
+        <div class="trophy">
+          <img src="https://github-profile-trophy.vercel.app/?username=thukhakyawe&theme=discord&no-frame=true&no-bg=true&margin-w=4" alt="GitHub trophies">
+        </div>
+      </div>
     </section>
 
-    <section>
-      <h2>Contact</h2>
-      <p>
-        Email: <a href="mailto:thukhakyawe.dev@gmail.com">thukhakyawe.dev@gmail.com</a><br>
-        GitHub: <a href="https://github.com/thukhakyawe" target="_blank">github.com/thukhakyawe</a><br>
-        LinkedIn: <a href="https://linkedin.com/in/thukhakyawe" target="_blank">linkedin.com/in/thukhakyawe</a>
-      </p>
+    <section class="section quote-section container">
+      <div class="quote-mark">"</div>
+      <img src="https://quotes-github-readme.vercel.app/api?type=horizontal&theme=tokyonight" alt="Random developer quote">
     </section>
   </main>
 
-  <footer>
-    &copy; 2025 Thu Kha Kyawe. All rights reserved.
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>© 2026 Thu Kha Kyawe</span>
+      <div>
+        <a href="https://github.com/thukhakyawe" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/thukhakyawe/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://thukhakyawe.hashnode.dev/" target="_blank" rel="noopener">Hashnode</a>
+      </div>
+    </div>
   </footer>
 </body>
 </html>
