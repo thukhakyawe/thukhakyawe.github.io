@@ -13,6 +13,55 @@ const esc = (s) =>
         "'": "&#39;"
     })[c]);
 
+// Convert GitHub's pushed_at timestamp into
+// a human-friendly relative time.
+function timeAgo(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
+
+    const seconds = Math.floor(
+        (now - date) / 1000
+    );
+
+    if (seconds < 60) {
+        return "Updated just now";
+    }
+
+    const minutes = Math.floor(seconds / 60);
+
+    if (minutes < 60) {
+        return `Updated ${minutes} minute${minutes === 1 ? "" : "s"} ago`;
+    }
+
+    const hours = Math.floor(minutes / 60);
+
+    if (hours < 24) {
+        return `Updated ${hours} hour${hours === 1 ? "" : "s"} ago`;
+    }
+
+    const days = Math.floor(hours / 24);
+
+    if (days < 7) {
+        return `Updated ${days} day${days === 1 ? "" : "s"} ago`;
+    }
+
+    const weeks = Math.floor(days / 7);
+
+    if (weeks < 5) {
+        return `Updated ${weeks} week${weeks === 1 ? "" : "s"} ago`;
+    }
+
+    const months = Math.floor(days / 30);
+
+    if (months < 12) {
+        return `Updated ${months} month${months === 1 ? "" : "s"} ago`;
+    }
+
+    const years = Math.floor(days / 365);
+
+    return `Updated ${years} year${years === 1 ? "" : "s"} ago`;
+}
+
 async function getJSON(url) {
     const response = await fetch(url, {
         headers: {
@@ -29,9 +78,14 @@ async function getJSON(url) {
 }
 
 async function loadGitHub() {
-    const status = document.getElementById("github-status");
-    const reposEl = document.getElementById("github-repos");
-    const langsEl = document.getElementById("github-languages");
+    const status =
+        document.getElementById("github-status");
+
+    const reposEl =
+        document.getElementById("github-repos");
+
+    const langsEl =
+        document.getElementById("github-languages");
 
     try {
         const [profile, repos] = await Promise.all([
@@ -47,15 +101,17 @@ async function loadGitHub() {
         // Only your own active repositories.
         // Forks and archived repositories are excluded.
         const owned = repos.filter(
-            (repo) => !repo.fork && !repo.archived
+            (repo) =>
+                !repo.fork &&
+                !repo.archived
         );
 
-        // GitHub API returns these in latest-pushed order.
+        // GitHub returns these in latest-pushed order.
         const latest = owned.slice(0, 5);
 
-        // -----------------------------
-        // Statistics
-        // -----------------------------
+        // --------------------------------
+        // GitHub statistics
+        // --------------------------------
 
         document.getElementById("gh-repos").textContent =
             fmt(profile.public_repos);
@@ -88,9 +144,9 @@ async function loadGitHub() {
             "github-updated"
         ).textContent = "Live from GitHub";
 
-        // -----------------------------
+        // --------------------------------
         // Latest repositories
-        // -----------------------------
+        // --------------------------------
 
         reposEl.innerHTML = latest.length
             ? latest.map((repo) => `
@@ -100,6 +156,7 @@ async function loadGitHub() {
                     target="_blank"
                     rel="noopener"
                 >
+
                     <div>
 
                         <div class="repo-name">
@@ -126,15 +183,23 @@ async function loadGitHub() {
                             }
 
                             <span>
-                                ★ ${fmt(repo.stargazers_count)}
+                                ★ ${fmt(
+                                    repo.stargazers_count
+                                )}
                             </span>
 
                             <span>
-                                ⑂ ${fmt(repo.forks_count)}
+                                ⑂ ${fmt(
+                                    repo.forks_count
+                                )}
                             </span>
 
                             <span>
                                 ${esc(repo.visibility)}
+                            </span>
+
+                            <span>
+                                ${timeAgo(repo.pushed_at)}
                             </span>
 
                         </div>
@@ -158,62 +223,71 @@ async function loadGitHub() {
                 </div>
             `;
 
-        // -----------------------------
+        // --------------------------------
         // Languages
-        // -----------------------------
+        // --------------------------------
 
         const languageCounts = {};
 
         owned.forEach((repo) => {
+
             if (repo.language) {
                 languageCounts[repo.language] =
                     (languageCounts[repo.language] || 0) + 1;
             }
+
         });
 
-        const languageRows = Object.entries(languageCounts)
-            .sort((a, b) => b[1] - a[1])
-            .slice(0, 6);
+        const languageRows =
+            Object.entries(languageCounts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 6);
 
         const languageTotal =
             languageRows.reduce(
-                (total, [, count]) => total + count,
+                (total, [, count]) =>
+                    total + count,
                 0
             ) || 1;
 
         langsEl.innerHTML = languageRows.length
-            ? languageRows.map(([name, count]) => {
+            ? languageRows.map(
+                ([name, count]) => {
 
-                const percentage = Math.max(
-                    5,
-                    Math.round(
-                        (count / languageTotal) * 100
-                    )
-                );
+                    const percentage = Math.max(
+                        5,
+                        Math.round(
+                            (count / languageTotal) * 100
+                        )
+                    );
 
-                return `
-                    <div class="lang">
+                    return `
+                        <div class="lang">
 
-                        <div class="lang-line">
-                            <span>
-                                ${esc(name)}
-                            </span>
+                            <div class="lang-line">
 
-                            <span>
-                                ${percentage}%
-                            </span>
+                                <span>
+                                    ${esc(name)}
+                                </span>
+
+                                <span>
+                                    ${percentage}%
+                                </span>
+
+                            </div>
+
+                            <div class="lang-bar">
+
+                                <i
+                                    style="width:${percentage}%"
+                                ></i>
+
+                            </div>
+
                         </div>
-
-                        <div class="lang-bar">
-                            <i
-                                style="width:${percentage}%"
-                            ></i>
-                        </div>
-
-                    </div>
-                `;
-
-            }).join("")
+                    `;
+                }
+            ).join("")
             : `
                 <div class="github-error">
                     Language metadata will appear once
