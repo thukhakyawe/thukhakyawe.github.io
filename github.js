@@ -1,16 +1,263 @@
-const USER="thukhakyawe", API="https://api.github.com";
-const fmt=n=>new Intl.NumberFormat().format(n||0);
-const esc=s=>String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-async function getJSON(url){const r=await fetch(url,{headers:{"Accept":"application/vnd.github+json"}});if(!r.ok)throw Error(r.status);return r.json();}
-async function loadGitHub(){
- const status=document.getElementById("github-status"), reposEl=document.getElementById("github-repos"), langsEl=document.getElementById("github-languages");
- try{
-  const [profile,repos]=await Promise.all([getJSON(`${API}/users/${USER}`),getJSON(`${API}/users/${USER}/repos?per_page=100&sort=pushed&direction=desc`)]);
-  const owned = repos.filter(r => !r.fork && !r.archived), featured = [...owned].sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at)).slice(0, 5);
-  document.getElementById("gh-repos").textContent=fmt(profile.public_repos);document.getElementById("gh-followers").textContent=fmt(profile.followers);document.getElementById("gh-stars").textContent=fmt(owned.reduce((s,r)=>s+r.stargazers_count,0));document.getElementById("gh-forks").textContent=fmt(owned.reduce((s,r)=>s+r.forks_count,0));status.textContent="Live public repository data";document.getElementById("github-updated").textContent="Live from GitHub";
-  reposEl.innerHTML=featured.length?featured.map(r=>`<a class="repo" href="${r.html_url}" target="_blank" rel="noopener"><div><div class="repo-name">${esc(r.name)}</div><div class="repo-desc">${esc(r.description||"No repository description yet.")}</div><div class="repo-meta">${r.language?`<span>● ${esc(r.language)}</span>`:""}<span>★ ${fmt(r.stargazers_count)}</span><span>⑂ ${fmt(r.forks_count)}</span><span>${r.visibility}</span></div></div><div class="repo-arrow">↗</div></a>`).join(""):`<div class="github-error"><strong>No public repositories found.</strong>Publish projects and they will appear here automatically.</div>`;
-  const counts={};owned.forEach(r=>{if(r.language)counts[r.language]=(counts[r.language]||0)+1});const rows=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,6),total=rows.reduce((s,[,n])=>s+n,0)||1;
-  langsEl.innerHTML=rows.length?rows.map(([name,n])=>{const pct=Math.max(5,Math.round(n/total*100));return `<div class="lang"><div class="lang-line"><span>${esc(name)}</span><span>${pct}%</span></div><div class="lang-bar"><i style="width:${pct}%"></i></div></div>`}).join(""):`<div class="github-error">Language metadata will appear once public repositories contain source code.</div>`;
- }catch(e){status.textContent="GitHub data temporarily unavailable";reposEl.innerHTML=`<div class="github-error"><strong>GitHub API could not be reached.</strong>The portfolio remains usable. <a href="https://github.com/${USER}" target="_blank" rel="noopener" style="color:var(--green)">Open GitHub directly ↗</a></div>`;langsEl.innerHTML=`<div class="github-error">Live language data is unavailable right now.</div>`;document.getElementById("github-updated").textContent="GitHub profile";}
+const USER = "thukhakyawe";
+const API = "https://api.github.com";
+
+const fmt = (n) =>
+    new Intl.NumberFormat().format(n || 0);
+
+const esc = (s) =>
+    String(s || "").replace(/[&<>"']/g, (c) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[c]);
+
+async function getJSON(url) {
+    const response = await fetch(url, {
+        headers: {
+            Accept: "application/vnd.github+json"
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error(response.status);
+    }
+
+    return response.json();
 }
+
+async function loadGitHub() {
+    const status = document.getElementById("github-status");
+    const reposEl = document.getElementById("github-repos");
+    const langsEl = document.getElementById("github-languages");
+
+    try {
+        // Get profile + repositories
+        const [profile, repos] = await Promise.all([
+            getJSON(`${API}/users/${USER}`),
+            getJSON(
+                `${API}/users/${USER}/repos?per_page=100&sort=pushed&direction=desc`
+            )
+        ]);
+
+        // Only show your own active repositories
+        // Excludes forks and archived repositories
+        const owned = repos.filter(
+            (repo) => !repo.fork && !repo.archived
+        );
+
+        // GitHub already returns repositories by latest push.
+        // Take the newest 5.
+        const latest = owned.slice(0, 5);
+
+        // --------------------------------
+        // GitHub statistics
+        // --------------------------------
+
+        document.getElementById("gh-repos").textContent =
+            fmt(profile.public_repos);
+
+        document.getElementById("gh-followers").textContent =
+            fmt(profile.followers);
+
+        document.getElementById("gh-stars").textContent =
+            fmt(
+                owned.reduce(
+                    (total, repo) =>
+                        total + repo.stargazers_count,
+                    0
+                )
+            );
+
+        document.getElementById("gh-forks").textContent =
+            fmt(
+                owned.reduce(
+                    (total, repo) =>
+                        total + repo.forks_count,
+                    0
+                )
+            );
+
+        status.textContent = "Live public repository data";
+
+        document.getElementById("github-updated").textContent =
+            "Live from GitHub";
+
+        // --------------------------------
+        // Latest repositories
+        // --------------------------------
+
+        reposEl.innerHTML = latest.length
+            ? latest
+                  .map(
+                      (repo) => `
+                        <a
+                            class="repo"
+                            href="${repo.html_url}"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <div>
+                                <div class="repo-name">
+                                    ${esc(repo.name)}
+                                </div>
+
+                                <div class="repo-desc">
+                                    ${esc(
+                                        repo.description ||
+                                            "No repository description yet."
+                                    )}
+                                </div>
+
+                                <div class="repo-meta">
+
+                                    ${
+                                        repo.language
+                                            ? `
+                                                <span>
+                                                    ● ${esc(repo.language)}
+                                                </span>
+                                            `
+                                            : ""
+                                    }
+
+                                    <span>
+                                        ★ ${fmt(repo.stargazers_count)}
+                                    </span>
+
+                                    <span>
+                                        ⑂ ${fmt(repo.forks_count)}
+                                    </span>
+
+                                    <span>
+                                        ${repo.visibility}
+                                    </span>
+
+                                </div>
+                            </div>
+
+                            <div class="repo-arrow">
+                                ↗
+                            </div>
+                        </a>
+                    `
+                  )
+                  .join("")
+            : `
+                <div class="github-error">
+                    <strong>
+                        No public repositories found.
+                    </strong>
+
+                    Publish projects and they will appear here automatically.
+                </div>
+            `;
+
+        // --------------------------------
+        // Languages
+        // --------------------------------
+
+        const languageCounts = {};
+
+        owned.forEach((repo) => {
+            if (repo.language) {
+                languageCounts[repo.language] =
+                    (languageCounts[repo.language] || 0) + 1;
+            }
+        });
+
+        const languageRows = Object.entries(languageCounts)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 6);
+
+        const languageTotal =
+            languageRows.reduce(
+                (total, [, count]) => total + count,
+                0
+            ) || 1;
+
+        langsEl.innerHTML = languageRows.length
+            ? languageRows
+                  .map(([name, count]) => {
+                      const percentage = Math.max(
+                          5,
+                          Math.round(
+                              (count / languageTotal) * 100
+                          )
+                      );
+
+                      return `
+                        <div class="lang">
+
+                            <div class="lang-line">
+                                <span>
+                                    ${esc(name)}
+                                </span>
+
+                                <span>
+                                    ${percentage}%
+                                </span>
+                            </div>
+
+                            <div class="lang-bar">
+                                <i
+                                    style="width:${percentage}%"
+                                ></i>
+                            </div>
+
+                        </div>
+                      `;
+                  })
+                  .join("")
+            : `
+                <div class="github-error">
+                    Language metadata will appear once
+                    public repositories contain source code.
+                </div>
+            `;
+
+    } catch (error) {
+
+        console.error(
+            "GitHub API error:",
+            error
+        );
+
+        status.textContent =
+            "GitHub data temporarily unavailable";
+
+        reposEl.innerHTML = `
+            <div class="github-error">
+
+                <strong>
+                    GitHub API could not be reached.
+                </strong>
+
+                The portfolio remains usable.
+
+                <a
+                    href="https://github.com/${USER}"
+                    target="_blank"
+                    rel="noopener"
+                    style="color:var(--green)"
+                >
+                    Open GitHub directly ↗
+                </a>
+
+            </div>
+        `;
+
+        langsEl.innerHTML = `
+            <div class="github-error">
+                Live language data is unavailable right now.
+            </div>
+        `;
+
+        document.getElementById(
+            "github-updated"
+        ).textContent = "GitHub profile";
+    }
+}
+
 loadGitHub();
